@@ -47,7 +47,7 @@ class OrderApp {
         this.orderDetailsTBody.addEventListener("click", event => {
             if (event.target.tagName === "BUTTON") {
                 const productId = event.target.dataset.id;
-                this.details = this.details.filter(detail => detail.product !== productId);
+                this.details = this.details.filter(detail => detail.product.id !== productId);
                 event.target.closest("tr").remove();
             }
         });
