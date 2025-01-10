@@ -23,41 +23,51 @@
     <h1 class="mb-4">Product Management</h1>
     <form id="productSelectionForm">
         <div class="row">
-            <div class="col-md-6">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="sulejmani" readonly>
+            <div class="col-md-4">
+                <label for="customer" class="form-label">Customer</label>
+                <input type="text" class="form-control" id="customer" name="customer">
             </div>
-            <div class="col-md-6">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control" id="date" name="date">
+            <div class="col-md-4">
+                <label for="employee" class="form-label">Username</label>
+                <input type="text" class="form-control" id="employee" name="employee" value="sulejmani" readonly>
+            </div>
+            <div class="col-md-4">
+                <label for="orderDate" class="form-label">Date</label>
+                <input type="date" class="form-control" id="orderDate" name="orderDate">
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
                 <label for="product" class="form-label">Select Product</label>
                 <select class="form-select" id="product" name="product">
                     <option selected>Select One</option>
                     <!-- Add more products here -->
                 </select>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <label for="quantity" class="form-label">Quantity</label>
                 <input type="number" class="form-control" id="quantity" name="quantity" value="0">
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-2">
                 <label for="price" class="form-label">Price</label>
                 <input type="text" class="form-control" id="price" name="price" value="0">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-2">
                 <label for="discount" class="form-label">Discount</label>
-                <input type="text" class="form-control" id="discount" value="0">
+                <input type="text" class="form-control" id="discount" value="0" name="discount">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary mt-4">ADD</button>
             </div>
         </div>
-        <button type="button" class="btn btn-primary">ADD</button>
-    </form>
 
+    </form>
+    <div class="row">
+        <hr>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -70,29 +80,23 @@
             <th>Actions</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>Jogobella</td>
-            <td>2</td>
-            <td>10 EUR</td>
-            <td>0 EUR</td>
-            <td>20 EUR</td>
-            <td><button class="btn btn-danger btn-sm">X</button></td>
-        </tr>
+        <tbody id="orderDetails">
+
         <!-- Add more rows here -->
         </tbody>
     </table>
 
     <div class="d-flex justify-content-between mt-4">
-        <button type="button" class="btn btn-secondary">CA/CEL</button>
-        <button type="button" class="btn btn-success">SAVE</button>
+        <button type="button" class="btn btn-secondary">CANCEL</button>
+        <button type="button" class="btn btn-success" id="btnSave">SAVE</button>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script th:src="@{/assets/js/shared/base.api.js}"></script>
+<script th:src="@{/assets/js/shared/helper.js}"></script>
 <script th:src="@{/assets/js/product/api.js}"></script>
 <script th:src="@{/assets/js/order/api.js}"></script>
 <script th:src="@{/assets/js/order/app.js}"></script>
