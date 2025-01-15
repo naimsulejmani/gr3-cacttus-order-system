@@ -1,8 +1,12 @@
 package dev.naimsulejmani.gr3cacttusordersystem.dtos;
 
+import dev.naimsulejmani.gr3cacttusordersystem.entities.OrderDetailEntity;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -14,4 +18,17 @@ public class ProductDto {
     private double price;
     private String description;
     private Category category;
+
+
+
 }
+
+
+
+
+
+
+
+
+
+

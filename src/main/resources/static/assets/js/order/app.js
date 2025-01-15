@@ -54,7 +54,7 @@ class OrderApp {
 
         this.btnSave.addEventListener("click", async event => {
             const formData = new FormData(this.productSelectionForm);
-            const order = Helper.formDataToJsonObject(formData);
+            const order = Object.fromEntries(formData);//Helper.formDataToJsonObject(formData);
             delete order["product"];
             delete order["price"];
             delete order["discount"];

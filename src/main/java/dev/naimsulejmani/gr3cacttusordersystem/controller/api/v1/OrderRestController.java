@@ -1,6 +1,5 @@
 package dev.naimsulejmani.gr3cacttusordersystem.controller.api.v1;
 
-import dev.naimsulejmani.gr3cacttusordersystem.dtos.OrderDetail;
 import dev.naimsulejmani.gr3cacttusordersystem.dtos.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -17,7 +17,7 @@ public class OrderDto {
     private String employee;
     private String customer;
     private LocalDateTime createdAt;
-    List<OrderDetail> details;
+    List<OrderDetailDto> details;
 }
 
 
