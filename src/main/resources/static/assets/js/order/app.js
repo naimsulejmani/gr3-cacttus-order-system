@@ -7,6 +7,9 @@ class OrderApp {
         this.products = [];
         this.orderDetailsTBody = document.getElementById("orderDetails");
         this.btnSave = document.getElementById("btnSave");
+        this.totalNett = document.getElementById("totalNett");
+        this.totalVat = document.getElementById("totalVat");
+        this.totalGross = document.getElementById("totalGross");
     }
 
     async init() {
@@ -82,6 +85,7 @@ class OrderApp {
                 const productId = event.target.dataset.id;
                 this.details = this.details.filter(detail => detail.product.id !== productId);
                 event.target.closest("tr").remove();
+                this.calculateTotalOrder();
             }
         });
     }
@@ -115,6 +119,7 @@ class OrderApp {
             <td><button class="btn btn-danger btn-sm" data-id="${object.product}">X</button></td>
         </tr>`
 
+            this.calculateTotalOrder();
             this.resetProductSelectionForm();
         });
     }
@@ -150,7 +155,40 @@ class OrderApp {
         });
 
         this.productSelectionForm.querySelector("#product").innerHTML = productSelectionHtml;
+    }
 
+    calculateTotalOrder() {
+        const totalGross = this.details.reduce((total, detail) => total + detail.total, 0);
+        const totalNett = totalGross / 1.18;
+        const totalVat = totalGross - totalNett;
+        // this.totalNett.textContent = totalNett.toFixed(2);
+        // this.totalVat.textContent = totalVat.toFixed(2);
+        // this.totalGross.textContent = totalGross.toFixed(2);
+
+        this.totalNett.textContent = totalNett.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        this.totalVat.textContent = totalVat.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        this.totalGross.textContent = totalGross.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        // let totalGross = 0;
+        // this.details.forEach(detail => {
+        //     totalGross += detail.total
+        // })
 
     }
 }
