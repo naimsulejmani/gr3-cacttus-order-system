@@ -13,6 +13,80 @@ class OrderApp {
         this.productSelectionForm.querySelector("#orderDate").value = new Date().toISOString().split("T")[0];
         this.loadProducts();
 
+        this.onProductSelectionChange();
+        this.onSubmitProductForm();
+        this.onDeleteProductFromOrder();
+        this.onSaveOrder();
+
+        this.realCalculateProductTotal();
+
+    }
+
+    realCalculateProductTotal() {
+        this.productSelectionForm.querySelectorAll("input.real-calc")
+            .forEach(input => {
+                input.addEventListener("keyup", event => {
+                    // const quantity = this.productSelectionForm.querySelector("input#quantity").value;
+                    // const price = this.productSelectionForm.querySelector("input#price").value;
+                    // const discount = this.productSelectionForm.querySelector("input#discount").value;
+                    this.calculateProductTotal();
+                })
+            })
+    }
+
+    calculateProductTotal() {
+        const {quantity, price, discount} =
+            Object.fromEntries(new FormData(this.productSelectionForm));
+        const total = quantity * price * (1 - discount / 100);
+        this.productSelectionForm.querySelector("input#total").value = total;
+    }
+
+
+    onProductSelectionChange() {
+        this.productSelectionForm.querySelector("select#product").addEventListener("change",
+            event => {
+
+                const productId = event.target.value;
+                const product = this.products.find(product => product.id.toString() === productId);
+                this.productSelectionForm.querySelector("input#price").value = product.price;
+
+
+                this.productSelectionForm.querySelector("input#quantity").focus();
+                this.productSelectionForm.querySelector("input#quantity").select();
+
+                this.calculateProductTotal();
+
+
+            });
+    }
+
+    onSaveOrder() {
+        this.btnSave.addEventListener("click", async event => {
+            const formData = new FormData(this.productSelectionForm);
+            const order = Object.fromEntries(formData);//Helper.formDataToJsonObject(formData);
+            delete order["product"];
+            delete order["price"];
+            delete order["discount"];
+            delete order["quantity"];
+            order.details = this.details;
+            console.log(order);
+            console.log(JSON.stringify(order));
+            const newOrder = await this.orderApi.add(order);
+            console.log(newOrder)
+        });
+    }
+
+    onDeleteProductFromOrder() {
+        this.orderDetailsTBody.addEventListener("click", event => {
+            if (event.target.tagName === "BUTTON") {
+                const productId = event.target.dataset.id;
+                this.details = this.details.filter(detail => detail.product.id !== productId);
+                event.target.closest("tr").remove();
+            }
+        });
+    }
+
+    onSubmitProductForm() {
         this.productSelectionForm.addEventListener("submit", async event => {
             event.preventDefault();
             const formData = new FormData(event.target);
@@ -43,29 +117,6 @@ class OrderApp {
 
             this.resetProductSelectionForm();
         });
-
-        this.orderDetailsTBody.addEventListener("click", event => {
-            if (event.target.tagName === "BUTTON") {
-                const productId = event.target.dataset.id;
-                this.details = this.details.filter(detail => detail.product.id !== productId);
-                event.target.closest("tr").remove();
-            }
-        });
-
-        this.btnSave.addEventListener("click", async event => {
-            const formData = new FormData(this.productSelectionForm);
-            const order = Object.fromEntries(formData);//Helper.formDataToJsonObject(formData);
-            delete order["product"];
-            delete order["price"];
-            delete order["discount"];
-            delete order["quantity"];
-            order.details = this.details;
-            console.log(order);
-            console.log(JSON.stringify(order));
-            const newOrder = await this.orderApi.add(order);
-            console.log(newOrder)
-        });
-
     }
 
     resetProductSelectionForm() {
@@ -74,6 +125,7 @@ class OrderApp {
         this.productSelectionForm.querySelector("#discount").value = 0;
         this.productSelectionForm.querySelector("#product").value = ""
         this.productSelectionForm.querySelector("#product").focus();
+        this.productSelectionForm.querySelector("#total").value = 0;
     }
 
     async loadProducts() {
